@@ -19,13 +19,24 @@ apply plugin: 'kotlin-android-extensions'
 
 apply from: "$project.rootDir/tools/gradle/versionCode.gradle"
 
+//repositories {
+//    google()
+//    mavenCentral()
+//    flatDir {
+//        dirs "libs"
+//    }
+//    maven {
+//        url = uri("http://maven.wafour.com:8081/artifactory/libs-release/")
+//    }
+//}
+
 android {
     compileSdkVersion 28
     buildToolsVersion '28.0.3'
 
     defaultConfig {
         applicationId "org.mozilla.tv.firefox"
-        minSdkVersion 22
+        minSdkVersion 21
         targetSdkVersion 28
         versionCode 11 // This versionCode is "frozen" for local builds. For "release" builds we
         // override this with a generated versionCode at build time.
@@ -228,15 +239,7 @@ dependencies {
     // depend on a separate library for unit tests. This will be removed in future releases.
     testImplementation "org.mozilla.telemetry:glean-forUnitTests:21.3.0"
 
-    androidTestImplementation "tools.fastlane:screengrab:1.2.0", {
-        // This Fastlane dependency causes our builds to fail due to having two different
-        // versions of UiAutomator. Fastlane is not on the most recent version of
-        // com.android.support.test.uiautomator, which presumably prevents Jetifier from
-        // fixing this
-        //
-        // TODO try removing this then running Espresso every time Fastlane is updated
-        exclude group: 'com.android.support.test.uiautomator', module: 'uiautomator-v18'
-    }
+    androidTestImplementation files("libs/screengrab-1.2.0.aar")
 
     androidTestImplementation "org.jetbrains.kotlin:kotlin-reflect:${kotlin_version}"
 
